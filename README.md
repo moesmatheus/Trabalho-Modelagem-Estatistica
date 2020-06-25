@@ -1,5 +1,5 @@
 # Trabalho Modelagem Estatística Avançada 
-
+[Interface da simulação](https://modelagem-estatistica.herokuapp.com/)
 ## Introdução
 Este programa simula a chegada de clientes a um banco, que possui alguns postos de atendimento (caixas). A fila é única para todos os caixas.
 Os tempos entre chegadas de clientes segue uma distribuição normal, continua discreta, contínua ou exponencial.
@@ -43,5 +43,5 @@ Variável inteira com o horário atual. O tempo é medido em segundos, contados 
 
 Lista que registra o tempo de espera na fila de cada cliente que vem ao banco. Se o cliente não encontrou nenhuma fila, registra zero. Unidade é minutos (e não segundos!). 
 
-## Aplicação Streamlit
+## Executar Aplicação Streamlit
 > streamlit run stream.py
