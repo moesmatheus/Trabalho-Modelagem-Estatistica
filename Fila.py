@@ -78,7 +78,7 @@ class Fila():
         
         # Funcao de distribuicao de saida
         self.fn_saida = lambda :random.gauss(t_saida_media, t_saida_dp)
-
+        
         self.p_preferencial = p_preferencial
         
     def chegada(self, verbose = False):
@@ -142,7 +142,7 @@ class Fila():
         atender seis cliente. Mas a função nada retorna como resultado. 
         '''
         
-        if len(self.fila) == 0 and i == 0:        # Caixa foi liberado, mas não há cliente
+        if len(self.fila) == 0:        # Caixa foi liberado, mas não há cliente
             
             self.caixas[i] = "livre"   # na fila --> muda status deste caixa para livre.
             
@@ -153,7 +153,9 @@ class Fila():
             # para ser atendido e registra essa informação. Retira o cliente da
             # fila. Programa o final do atendimento do cliente nesse caixa. 
             
-            if True in self.preferencial:
+            if True in self.preferencial and i == 0:
+                if verbose:
+                    print('Atendimento preferencial')
                 pos = self.preferencial.index(True)
                 self.log_preferencial.append(True)
             else:
@@ -275,7 +277,7 @@ class Fila():
         print('-'*80)
         
         # gera histograma dos tempos de espera na fila
-        plt.hist(f.tempos_espera, 
+        plt.hist(self.tempos_espera, 
                  #bins = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
                 )
         plt.title('Histograma dos tempos de espera na fila')
