@@ -1,8 +1,7 @@
 import random # biblioteca para geração de números aleatórios
 import time   # biblioteca que possui função para gerar espera no processamento
 from matplotlib import pyplot as plt  # biblioteca gráfica
-import numpy as np
-import pandas as pd
+import numpy as np\
 
 class Fila():
     def __init__(
@@ -63,6 +62,7 @@ class Fila():
         # Não há registros de tempos de espera pelos clientes (ninguém chegou ainda!).
         self.tempos_espera = [] # segundos
         self.log_tempo_atendimentos = []
+        self.log_tempo_chegada = []
         
         # Funcao aleatoria distribuicao chegada
         if dist_chegada == 'gauss-norm':
@@ -90,7 +90,11 @@ class Fila():
         # Programa a chegada de um próximo cliente após um tempo aleatório. 
         self.eventos.append(np.random.binomial(1, 1 - 0.5) - 2)
         
-        h = self.horario + self.fn_chegada() # normal, especificando média e dp
+        t_c = self.fn_chegada()
+        
+        self.log_tempo_chegada.append(t_c)
+        
+        h = self.horario +  t_c# normal, especificando média e dp
         
         self.horario_eventos.append(h)
         
@@ -146,8 +150,6 @@ class Fila():
             
             self.caixas[i] = "livre"   # na fila --> muda status deste caixa para livre.
             
-            #self.caixas[self.eventos[-1]] = 'livre'
-            
         else:
             # Havendo cliente na fila, registra quantos minutos ele esperou
             # para ser atendido e registra essa informação. Retira o cliente da
@@ -164,7 +166,6 @@ class Fila():
             
             self.tempos_espera.append((self.horario - self.fila[pos])/60) # espera = agora - chegada
             
-            # del self.fila[0]
             self.fila.pop(pos)
             self.preferencial.pop(pos)
 
@@ -223,7 +224,6 @@ class Fila():
     def simulacao(self, horas: float = 1, verbose = False):
         
         while self.horario < 60 * 60 * horas:
-        #for i in range(20):
             
             x = self.proximo_evento(verbose = verbose)
             
@@ -237,9 +237,6 @@ class Fila():
                 
             if verbose:
                 print('-' * 90)
-        
-#         self.log_eventos += self.eventos
-#         self.log_horarios_eventos += self.horario_eventos
         
     
     def print_status(self, condensed: bool = False):
@@ -277,9 +274,7 @@ class Fila():
         print('-'*80)
         
         # gera histograma dos tempos de espera na fila
-        plt.hist(self.tempos_espera, 
-                 #bins = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-                )
+        plt.hist(self.tempos_espera)
         plt.title('Histograma dos tempos de espera na fila')
         plt.xlabel("Tempo de espera na fila para ser atendido (minutos)")
         plt.ylabel("Contagem de clientes")
@@ -298,9 +293,8 @@ class Fila():
         plt.show()
         
         print('-'*80)
-        self.log = pd.DataFrame({'eventos': self.log_eventos, 'horarios': self.log_horarios_eventos})
         plt.title('Intervalo de chegadas')
-        self.log[self.log.eventos == -1].horarios.diff().plot.hist()
+        plt.hist(self.log_tempo_chegada)
         plt.grid(True)
         plt.show()
         

@@ -91,7 +91,7 @@ Lista que registra o tempo de espera na fila de cada cliente que vem ao banco. S
             n_caixas = n_caixas, 
             t_chegada_media = t_chegada_media, 
             t_chegada_dp = t_chegada_dp, 
-            t_chegada_minimo = t_chegada_minimo , 
+            t_chegada_minimo = t_chegada_minimo, 
             t_chegada_maximo = t_chegada_maximo, 
             dist_chegada = dist_chegada, 
             t_saida_media = t_saida_media, 
@@ -129,12 +129,11 @@ Lista que registra o tempo de espera na fila de cada cliente que vem ao banco. S
     plt.grid(True)
     st.pyplot()
 
-    f.log = pd.DataFrame({'eventos': f.log_eventos, 'horarios': f.log_horarios_eventos})
-    plt.title('Intervalo de chegadas')
-    f.log[f.log.eventos == -1].horarios.diff().plot.hist()
-    plt.grid(True)
-    plt.xlabel("Intervalor de chegadas entre clientes (s)")
+    plt.title('Intervalo de chegadas (s)')
+    plt.hist(f.log_tempo_chegada)
+    plt.xlabel("Intervalo de chegadas (s)")
     plt.ylabel("Contagem de clientes")
+    plt.grid(True)
     st.pyplot()
 
     plt.title('Tempo de atendimentos')
